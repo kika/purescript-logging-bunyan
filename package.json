@@ -1,0 +1,21 @@
+{
+  "name": "purescript-node-logging-bunyan",
+  "version": "0.0.1",
+  "description": "Purescript bindings for Bunyan logger for Node",
+  "homepage": "https://github.com/kika/purescript-node-logging-bunyan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kika/purescript-node-logging-bunyan.git"
+  },
+  "keywords": [
+    "purescript"
+  ],
+  "author": "Kirill Pertsev <kika@kikap.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kika/purescript-node-logging-bunyan/issues"
+  },
+  "devDependencies": {
+    "bunyan": "^1.8.1"
+  }
+}
