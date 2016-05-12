@@ -6,9 +6,11 @@ var bunyan = require("bunyan");
 
 exports.createLoggerImpl = bunyan.createLogger
 
-exports.infoImpl = function (logger, msg) {
-    return function() {
-        logger.info( msg );
-        return {};
+exports.infoImpl = function (dict) {
+    return function (logger, msg) {
+        return function() {
+            logger.info( msg );
+            return {};
+        }
     }
 }

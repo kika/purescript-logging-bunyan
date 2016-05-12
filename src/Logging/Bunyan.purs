@@ -24,10 +24,11 @@ foreign import data LOG :: !
 foreign import data Logger :: *
 
 -- Foreign implementations
-foreign import createLoggerImpl::Fn1 Foreign Logger
-foreign import infoImpl:: 
--- WHY???  forall a eff. (Log a) => Fn2 Logger a (Eff (log :: LOG | eff) Unit) 
-  forall a eff. Fn2 Logger a (Eff (log :: LOG | eff) Unit) 
+foreign import
+  createLoggerImpl::Fn1 Foreign Logger
+foreign import 
+  infoImpl::forall a eff. (Log a) => Fn2 Logger a (Eff (log :: LOG | eff) Unit) 
+--   forall a eff. Fn2 Logger a (Eff (log :: LOG | eff) Unit) 
 
 -- | Phantom type for Options
 foreign import data BunyanOpts :: *
