@@ -2,7 +2,7 @@ module Test.Main where
 
 import Prelude (Unit, bind, ($))
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE, log)
+import Control.Monad.Eff.Console (CONSOLE)
 import Data.Options (Options(), (:=))
 
 import Logging.Bunyan (
@@ -10,7 +10,7 @@ import Logging.Bunyan (
     logF, logOptName, logR, 
     create, fatal, error, warn, info, debug, trace, 
     getLevel, setLevel, logLevelName,
-    LogLevel (Fatal, Error, Warning, Info, Debug, Trace)
+    LogLevel (Trace)
   )
 
 logOpts :: Options BunyanOpts
@@ -40,3 +40,4 @@ main = do
   setLevel logger Trace
   debug logger "Debug - you should see this"
   trace logger "Trace - and you should see this too"
+  info  logger $ logF "Log level is: " $ logLevelName $ getLevel logger

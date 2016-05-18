@@ -39,6 +39,7 @@ data LogLevel =
   Debug   | 
   Trace
 type LogLevelName = String
+
 logLevelName:: LogLevel -> LogLevelName
 logLevelName Fatal   = "fatal"
 logLevelName Error   = "error"
@@ -46,6 +47,7 @@ logLevelName Warning = "warn"
 logLevelName Info    = "info"
 logLevelName Debug   = "debug"
 logLevelName Trace   = "trace"
+
 logLevelFromName::String -> LogLevel
 logLevelFromName "fatal"  = Fatal
 logLevelFromName "error"  = Error

@@ -1,4 +1,4 @@
 # purescript-logging-bunyan
 Purescript bindings to Bunyan logging framework (Node and browser)
 
-# Just started, not even close to be ready
+## Implements a minimal necessary subset of Bunyan API
