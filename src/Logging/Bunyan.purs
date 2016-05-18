@@ -3,7 +3,6 @@ module Logging.Bunyan
     LOG
   , Logger
   , BunyanOpts
-  , LogLevel
   , LogRecord
   , class Variadic
   , vararg'
@@ -68,7 +67,8 @@ foreign import createLoggerImpl::Fn1 Foreign Logger
 foreign import 
   logImpl::forall e. Fn3 LogLevelName Logger String (Eff (log::LOG|e) Unit) 
 foreign import getLogLevelImpl::Fn1 Logger LogLevelName
-foreign import setLogLevelImpl::Fn2 Logger LogLevelName Logger
+foreign import 
+  setLogLevelImpl::forall e. Fn2 Logger LogLevelName (Eff (log::LOG|e) Logger)
 
 -- | Phantom type for Options
 foreign import data BunyanOpts :: *
@@ -107,28 +107,29 @@ logR = LogRecord<<<mkExistsR
 logF::forall v. (Variadic v) => v
 logF = vararg' []
 
-fatal:: forall e. Logger -> String -> Eff(log::LOG|e) Unit
+fatal::forall e. Logger -> String -> Eff(log::LOG|e) Unit
 fatal logger msg = runFn3 logImpl (logLevelName Fatal) logger msg
 
-error:: forall e. Logger -> String -> Eff(log::LOG|e) Unit
+error::forall e. Logger -> String -> Eff(log::LOG|e) Unit
 error logger msg = runFn3 logImpl (logLevelName Error) logger msg
 
-warn:: forall e. Logger -> String -> Eff(log::LOG|e) Unit
+warn::forall e. Logger -> String -> Eff(log::LOG|e) Unit
 warn logger msg = runFn3 logImpl (logLevelName Warning) logger msg
 
-info:: forall e. Logger -> String -> Eff(log::LOG|e) Unit
+info::forall e. Logger -> String -> Eff(log::LOG|e) Unit
 info logger msg = runFn3 logImpl (logLevelName Info) logger msg
 
-debug:: forall e. Logger -> String -> Eff(log::LOG|e) Unit
+debug::forall e. Logger -> String -> Eff(log::LOG|e) Unit
 debug logger msg = runFn3 logImpl (logLevelName Debug) logger msg
 
-trace:: forall e. Logger -> String -> Eff(log::LOG|e) Unit
+trace::forall e. Logger -> String -> Eff(log::LOG|e) Unit
 trace logger msg = runFn3 logImpl (logLevelName Trace) logger msg
 
 -- | Gets current logging level
 getLevel::Logger -> LogLevel
 getLevel logger = logLevelFromName $ runFn1 getLogLevelImpl logger
 
--- | Sets logging level and returns new logger. Old logger is no longer valid
-setLevel::Logger -> LogLevel -> Logger
+-- | Sets logging level and returns updated logger.
+setLevel::forall e. Logger -> LogLevel -> Eff(log::LOG|e) Logger
 setLevel logger level = runFn2 setLogLevelImpl logger $ logLevelName level
+

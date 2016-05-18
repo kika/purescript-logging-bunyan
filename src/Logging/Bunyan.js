@@ -22,7 +22,9 @@ exports.getLogLevelImpl = function (logger) {
 }
 
 exports.setLogLevelImpl = function (logger, level) {
-    logger.level(level);
-    return logger; 
+    return function() {
+        logger.level(level);
+        return logger; 
+    }
 }
 
