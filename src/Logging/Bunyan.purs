@@ -16,6 +16,10 @@ module Logging.Bunyan
   , info
   , debug
   , trace
+  , LogLevel(..)
+  , getLevel
+  , setLevel
+  , logLevelName
   , logOptName
 )
 where
@@ -23,7 +27,7 @@ where
 import Prelude (Unit, ($), class Show, (++), show, (<<<) )
 import Control.Monad.Eff (Eff)
 import Data.Options (Options(), Option(), opt, options)
-import Data.Function (Fn3, Fn1, runFn3, runFn1)
+import Data.Function (Fn3, Fn2, Fn1, runFn3, runFn2, runFn1)
 import Data.Foreign (Foreign)
 import Data.String (joinWith)
 import Data.ExistsR (ExistsR, mkExistsR)
@@ -43,6 +47,15 @@ logLevelName Warning = "warn"
 logLevelName Info    = "info"
 logLevelName Debug   = "debug"
 logLevelName Trace   = "trace"
+logLevelFromName::String -> LogLevel
+logLevelFromName "fatal"  = Fatal
+logLevelFromName "error"  = Error
+logLevelFromName "warn"   = Warning
+logLevelFromName "info"   = Info
+logLevelFromName "debug"  = Debug
+logLevelFromName "trace"  = Trace
+logLevelFromName "trace"  = Trace
+logLevelFromName _        = Trace -- Catch'all
 
 -- | Effect type for logging
 foreign import data LOG :: !
@@ -54,6 +67,8 @@ foreign import data Logger :: *
 foreign import createLoggerImpl::Fn1 Foreign Logger
 foreign import 
   logImpl::forall e. Fn3 LogLevelName Logger String (Eff (log::LOG|e) Unit) 
+foreign import getLogLevelImpl::Fn1 Logger LogLevelName
+foreign import setLogLevelImpl::Fn2 Logger LogLevelName Logger
 
 -- | Phantom type for Options
 foreign import data BunyanOpts :: *
@@ -109,3 +124,11 @@ debug logger msg = runFn3 logImpl (logLevelName Debug) logger msg
 
 trace:: forall e. Logger -> String -> Eff(log::LOG|e) Unit
 trace logger msg = runFn3 logImpl (logLevelName Trace) logger msg
+
+-- | Gets current logging level
+getLevel::Logger -> LogLevel
+getLevel logger = logLevelFromName $ runFn1 getLogLevelImpl logger
+
+-- | Sets logging level and returns new logger. Old logger is no longer valid
+setLevel::Logger -> LogLevel -> Logger
+setLevel logger level = runFn2 setLogLevelImpl logger $ logLevelName level

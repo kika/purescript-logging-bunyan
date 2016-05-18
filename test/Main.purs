@@ -6,9 +6,12 @@ import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Options (Options(), (:=))
 
 import Logging.Bunyan (
-  LOG, BunyanOpts, 
-  logF, logOptName, logR, 
-  create, fatal, error, warn, info, debug, trace)
+    LOG, BunyanOpts, 
+    logF, logOptName, logR, 
+    create, fatal, error, warn, info, debug, trace, 
+    getLevel, setLevel, logLevelName,
+    LogLevel (Fatal, Error, Warning, Info, Debug, Trace)
+  )
 
 logOpts :: Options BunyanOpts
 logOpts = logOptName := "Test"
@@ -31,4 +34,9 @@ main = do
   info  logger "Info - this one is true"
   debug logger "Debug - if you see this, it's an error"
   trace logger "Trace - you should not see this either"
-  log "Tests OK"
+  info  logger $ logF "Log level is: " $ logLevelName $ getLevel logger
+  debug logger "Debug - if you see this, it's an error"
+  trace logger "Trace - you should not see this either"
+  setLevel logger Trace
+  debug logger "Debug - you should see this"
+  trace logger "Trace - and you should see this too"
