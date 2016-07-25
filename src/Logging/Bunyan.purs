@@ -23,10 +23,10 @@ module Logging.Bunyan
 )
 where
 
-import Prelude (Unit, ($), class Show, (++), show, (<<<) )
+import Prelude
 import Control.Monad.Eff (Eff)
 import Data.Options (Options(), Option(), opt, options)
-import Data.Function (Fn3, Fn2, Fn1, runFn3, runFn2, runFn1)
+import Data.Function.Uncurried (Fn3, Fn2, Fn1, runFn3, runFn2, runFn1)
 import Data.Foreign (Foreign)
 import Data.String (joinWith)
 import Data.ExistsR (ExistsR, mkExistsR)
@@ -90,14 +90,14 @@ class Variadic a where
 instance varargStr::Variadic String where
   vararg' acc = joinWith " " acc
 instance varargArg::(Show a, Variadic v) => Variadic (a -> v) where
-  vararg' acc = \x -> vararg' (acc ++ [show x])
+  vararg' acc = \x -> vararg' (acc <> [show x])
 
 {- Machinery to support output of arbitrary records -}
 -- newtype wrapper to overcome orphaned instances limitation
-newtype LogRecord = LogRecord (ExistsR Object)
+newtype LogRecord = LogRecord (ExistsR Record)
 instance showRecord::Show LogRecord where
   show (LogRecord r) = showRecordImpl r
-foreign import showRecordImpl::ExistsR Object -> String
+foreign import showRecordImpl::ExistsR Record -> String
 
 -- | Helper function to support output of records to the log
 -- | takes an arbitrary record and returns `LogRecord`

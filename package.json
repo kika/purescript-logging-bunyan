@@ -1,6 +1,6 @@
 {
   "name": "purescript-node-logging-bunyan",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Purescript bindings for Bunyan logger for Node",
   "homepage": "https://github.com/kika/purescript-node-logging-bunyan",
   "repository": {
