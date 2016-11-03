@@ -8,6 +8,10 @@
   "moduleType": [
     "node"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kika/purescript-logging-bunyan.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
