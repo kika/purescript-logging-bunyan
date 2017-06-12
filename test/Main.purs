@@ -1,6 +1,6 @@
 module Test.Main where
 
-import Prelude (Unit, bind, ($))
+import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Data.Options (Options(), (:=))
@@ -37,7 +37,7 @@ main = do
   info  logger $ logF "Log level is: " $ logLevelName $ getLevel logger
   debug logger "Debug - if you see this, it's an error"
   trace logger "Trace - you should not see this either"
-  setLevel logger Trace
+  _ <- setLevel logger Trace
   debug logger "Debug - you should see this"
   trace logger "Trace - and you should see this too"
   info  logger $ logF "Log level is: " $ logLevelName $ getLevel logger

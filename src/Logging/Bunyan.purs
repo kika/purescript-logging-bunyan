@@ -24,7 +24,7 @@ module Logging.Bunyan
 where
 
 import Prelude
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 import Data.Options (Options(), Option(), opt, options)
 import Data.Function.Uncurried (Fn3, Fn2, Fn1, runFn3, runFn2, runFn1)
 import Data.Foreign (Foreign)
@@ -59,10 +59,10 @@ logLevelFromName "trace"  = Trace
 logLevelFromName _        = Trace -- Catch'all
 
 -- | Effect type for logging
-foreign import data LOG :: !
+foreign import data LOG :: Effect
 
 -- | Logger instance
-foreign import data Logger :: *
+foreign import data Logger :: Type
 
 -- Foreign implementations
 foreign import createLoggerImpl::Fn1 Foreign Logger
@@ -73,7 +73,7 @@ foreign import
   setLogLevelImpl::forall e. Fn2 Logger LogLevelName (Eff (log::LOG|e) Logger)
 
 -- | Phantom type for Options
-foreign import data BunyanOpts :: *
+foreign import data BunyanOpts :: Type
 
 -- | `create` options
 logOptName::Option BunyanOpts String

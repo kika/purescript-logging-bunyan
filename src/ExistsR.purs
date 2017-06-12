@@ -5,7 +5,7 @@ import Unsafe.Coerce (unsafeCoerce)
 
 -- | A variant of `Exists` that works for type constructors that accept a _row_
 -- | of types.
-data ExistsR (f :: # * -> *)
+data ExistsR (f :: # Type -> Type)
 
 -- | The `mkExistsR` function is used to introduce a value of type `ExistsR f`,
 -- | by providing a value of type `f a`, for some row of types `a` which will be

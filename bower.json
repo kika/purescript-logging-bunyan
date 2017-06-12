@@ -1,6 +1,6 @@
 {
   "name": "purescript-node-logging-bunyan",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "authors": [
     "Kirill Pertsev kika@kikap.com"
@@ -19,10 +19,13 @@
     "output"
   ],
   "dependencies": {
-    "purescript-console": "^2.0.0",
-    "purescript-options": "^2.0.0",
-    "purescript-functions": "^2.0.0",
-    "purescript-foreign": "^3.0.0",
-    "purescript-unsafe-coerce": "^2.0.0"
+    "purescript-console": "^3.0.0",
+    "purescript-options": "^3.0.0",
+    "purescript-functions": "^3.0.0",
+    "purescript-foreign": "^4.0.0",
+    "purescript-unsafe-coerce": "^3.0.0"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^3.0.0"
   }
 }
